@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel de Usuario - Hospital SDLG{% endblock %}
+
+{% load static %}
+
+{% block extra_head %}
+<!-- Agrega aquí cualquier estilo adicional específico del panel de usuario -->
+    
+{% endblock %}
+
+{% block content %}
+<!-- Contenido del panel de usuario -->
+<section class="container mx-auto my-12 p-6 bg-white rounded shadow">
+    <h2 class="text-3xl font-bold text-center mb-8"> {{username}}</h2>
+    <div class="flex justify-center items-center">
+        <form id="profile-picture-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="id_profile_picture" name="profile_picture" type="file" style="display:none;">
+            <button type="submit" style="display:none;"></button> <!-- Botón oculto para enviar el formulario -->
+        </form>
+        <img id="profile-picture" src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{{ MEDIA_URL }'profile_pictures/default.png' %}{% endif %}" onclick="document.getElementById('id_profile_picture').click();" class="cursor-pointer w-36 h-36 rounded-full" alt="Profile Picture">
+    </div>    
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+        <!-- Aquí puedes agregar los diferentes elementos del panel de usuario -->
+        <div class="text-center p-4">
+            <i class="fa-solid fa-user-pen"></i>
+            <h3 class="text-xl font-semibold mb-2"><a href="/user/edit_profile">Perfil</a></h3>
+            <p>Visualiza y actualiza tu información de perfil.</p>
+        </div>
+        <div class="text-center p-4">
+            <i class="fa-regular fa-calendar-check"></i>
+            <h3 class="text-xl font-semibold mb-2"><a href="/user/turnos/">Mis Turnos</a></h3>
+            <p>Consulta y gestiona tus próximos turnos médicos.</p>
+        </div>
+        <div class="text-center p-4">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h3 class="text-xl font-semibold mb-2">Historial de Turnos</h3>
+            <p>Accede al historial de tus turnos anteriores.</p>
+        </div>
+        <div class="text-center p-4">
+            <i class="fa-solid fa-tag"></i>
+            <h3 class="text-xl font-semibold mb-2"><a href="/user/testimonios/">Testimonio</a></h3>
+            <p>Deja un testimonio de tu estadia en el Hospital SDLG.</p>
+        </div>
+    </div>
+    <div class="container flex items-center justify-center block w-auto">
+        <button><a href="/turnero/loguot/"><i class="fa-solid fa-door-open"></i> Cerrar Sesión</a></button>
+    </div>
+</section>
+
+<script>
+    document.getElementById('id_profile_picture').addEventListener('change', function() {
+        document.getElementById('profile-picture-form').submit();
+    });
+</script>
+
+{% endblock %}
